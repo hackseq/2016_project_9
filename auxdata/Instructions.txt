@@ -1,0 +1,41 @@
+######Instructions
+#Downloaded plink
+https://www.cog-genomics.org/plink2
+
+#Downloaded chromosome20 and id names from 1000g (ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/release/20130502/)
+ALL.chr20.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz
+integrated_call_samples_v3.20130502.ALL.panel
+
+#We named integrated_call_samples_v3.20130502.ALL.panel the panel file 'panel.txt'
+
+#The individuals in dataset are not related, plink attempts to identify related samples and requires
+#two identifiers, so we are going to duplicate the ids in the panel.txt file
+****All sed commands are using the GNU version of sed***
+sed -i "s/\(\w\+\)\(.*\)/\1    \1\2/" panel.txt
+
+
+#create bed file with plink from the chr20
+plink --vcf ALL.chr20.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz --biallelic-only strict  --make-bed --out chr20
+
+#Divided the data based upon the five African groups (indicated with flags YRI ESN GWD MSL LWK)
+#individually
+plink --bfile chr20 --attrib-indiv panel.txt YRI --make-bed -out YRI
+#looped for 5 groups
+for pop in YRI ESN GWD MSL LWK; do ./plink --bfile chr20 --attrib-indiv panel.dup.txt $pop --make-bed --out $pop; done
+
+#Script to replace rs id with chromosome/base position
+bimrs2chrbp.sh
+
+#!/bin/bash
+sed -e  "s/\(\S*\)\s\(\S*\)\s\(\S*\)\s\(\S*\)\s\(\S*\)\s\(\S*\)/\\1	\\1:\\4	\\3	\4	\\5	\\6/" $1
+
+#To loop it for all .bim files
+for pop in YRI ESN GWD MSL LWK; do bimrs2chrbp.sh  $pop.bim > ${pop}_bp.bim; done
+
+#Move bim files into new directory origbims
+mkdir origbims
+
+for pop in YRI ESN GWD MSL LWK; do mv  $pop.bim origbims/; done
+
+for pop in YRI ESN GWD MSL LWK; do mv  ${pop}_bp.bim ${pop}.bim; done
+
