@@ -2,7 +2,7 @@
 import argparse
 import gzip
 
-def argparsing:
+def argparsing():
     parser = argparse.ArgumentParser(description='Provide LD gzip with optional required SNPs and blacklisted SNPS')
     parser.add_argument('--ldgzip', required=True)
     parser.add_argument('--reqSNP', required=False)
