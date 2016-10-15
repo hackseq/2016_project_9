@@ -1,4 +1,4 @@
-            #!/usr/bin/env python
+#!/usr/bin/env python
 
 import subprocess
 
@@ -18,5 +18,6 @@ for pop_name in pop_names:
     + "_ld_maf" \
     + "; done" 
     subprocess.run(run_plink, shell = True)
+
 #run the shell command
 subprocess.run(run_plink, shell = True)
