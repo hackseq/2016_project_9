@@ -1,4 +1,4 @@
-#! python
+#!/usr/bin/env python3
 import argparse
 
 parser = argparse.ArgumentParser(description='Provide VCF with optional required SNPs and blacklisted SNPS')
