@@ -34,7 +34,8 @@ def main():
     with gzip.open(args.ldgzip, 'rt') as f:
         getLDs (f, counts, ld_table)
 
-    for i in (1, 15):
+    for i in range(1, 15):
         print (counts.keys())
         print (counts.items())
         print(ld_table.keys() + ld_table.items())
+
