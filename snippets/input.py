@@ -10,11 +10,8 @@ def main():
     with gzip.open(args.ldgzip, 'rt') as f:
         getLDs(f, counts, ld_table)
 
-    for i in range(1, 15):
-        print(counts.keys())
-        print(counts.items())
-        print(ld_table.keys() + ld_table.items())
-
+    #Sample output, uncomment line below to print to console
+    #getSampleData()
 
 def argparsing():
 
@@ -32,6 +29,13 @@ def argparsing():
 def getLDs(inp, counts, ld_table):
 
     '''Parse lines from input and append to dictionaries'''
+    # Check if MAF columns are present.
+    index = 5
+    for line in inp:
+        n = len(line.split())
+        if n == 9:
+            index = 6
+        break;
 
     # Loop over PLINK output lines.
     for line in inp:
@@ -39,7 +43,7 @@ def getLDs(inp, counts, ld_table):
         data = line.split()
         # Parse SNP IDs.
         snp1 = data[2]
-        snp2 = data[6]
+        snp2 = data[index]
         # Append SNP IDs to dictionary.
         addToDict(snp1, snp2, ld_table)
         addToDict(snp2, snp1, ld_table)
@@ -53,6 +57,12 @@ def addToDict(snp1, snp2, ld_table):
         ld_table[snp1].add(snp2)
     except:
         ld_table[snp1] = set([snp2])
+
+
+def getSampleData():
+    for i in range(1, 5):
+        print(list(counts.items())[i])
+        print(list(ld_table.items())[i])
 
 if __name__ == '__main__':
     main()
