@@ -11,14 +11,9 @@ def main():
         getLDs(f, counts, ld_table)
 
     #Sample output
-    for i in range(1, 5):
-        for i, j in enumerate (counts.keys()):
-            print(counts.keys())
-            print(counts.items())
-        for i, k in enumarte(ld_table.keys()):
-            print(ld_table.keys())
-            print(ld_table.items())
-
+    for i in range(1, 3):
+        print(list(counts.items())[i])
+        print(list(ld_table.items())[i])
 
 def argparsing():
 
