@@ -447,20 +447,20 @@ def argparser():
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
-        '--in', required=True, nargs='+', help='one file per population',
+        '--in', required=True, nargs='+', help='Provide a list of filepaths to ldgzip files, one file per population',
         )
     parser.add_argument(
-        '--out', required=True)
+        '--out', required=True, help='Output file path')
     parser.add_argument(
-        '--min_LD', type=float, default=.8)
+        '--min_LD', type=float, default=.8, help='Set the minimum LD (Default = 0.8)')
     parser.add_argument(
-        '--min_MAF', type=float, default=.01)
+        '--min_MAF', type=float, default=.01, help='Set the minimum MAF (Default=0.01)')
     parser.add_argument(
-        '--max_window', type=int, default=250000)
-    parser.add_argument('--preselected')
-    parser.add_argument('--pretagged', '--ignore', '--blacklist')
+        '--max_window', type=int, default=250000, help='Set the maximum window for calculating LD (Default 250000 bp)')
+    parser.add_argument('--preselected', help='List of SNPs to include, regardless of LD or MAF. Flat text file, one ID per line')
+    parser.add_argument('--pretagged', '--ignore', '--blacklist', help='List of SNPs to exclude. Flat text file, one ID per line')
     parser.add_argument(
-        '--max_tagSNP', type=int, default=1000000,
+        '--max_tagSNP', type=int, default=1000000, help='Maximum number of tag SNPs to return (Default 1000000)'
         )
 
     d_args = vars(parser.parse_args())
