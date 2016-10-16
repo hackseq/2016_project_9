@@ -4,6 +4,7 @@ import sys
 import vcf
 
 def main():
+    # Create dict with dummy values for testing
     d_args = {'out': sys.stdout,
               'pretagged': None,
               'min_LD': 0.80,
@@ -31,8 +32,16 @@ def write_output(d_args, setT, d_setQ):
     return
 
 def write_output_vcf(d_args, setT):
-    vcf_reader = vcf.Reader(d_args['in'][0], 'r')
-    vcf_writer = vcf.Writer(d_args['out'], vcf_reader)
-    
+    # These objects might be used to create full valid VCF file, not used yet.
+    # vcf_reader = vcf.Reader(d_args['in'][0], 'r')
+    # vcf_writer = vcf.Writer(d_args['out'], vcf_reader)
+
+    with d_args['out'] as f:
+        # 8 mandatory columns for VCF file
+        f.write("#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\n")
+        # To start with, just print Chrom & Pos
+        for snp in setT:
+            f.write(snp.replace(':','\t') + '\n')
+        
 if __name__ == '__main__':
     main()
