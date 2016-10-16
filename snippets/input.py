@@ -39,3 +39,5 @@ def main():
         print (counts.items())
         print(ld_table.keys() + ld_table.items())
 
+if __name__ == '__main__':
+    main()
