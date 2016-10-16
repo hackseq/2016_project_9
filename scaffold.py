@@ -121,15 +121,22 @@ def update_counts_for_preselected_tag_SNPs(
     print(
         'SNPs in union set across populations',
         len(d_ID2tell.keys()), len(d_ID2cnt.keys()))
+    set_preselected_remove = set()
     with open('{}.LDmatrix'.format(d_args['out'])) as f:
         for ID in set_preselected:
-            ## Take into account that pre-selected SNPs
-            ## might not be in the set of SNPs
-            ## for which LD has been calculated
-            try:
-                cnt = d_ID2cnt[ID]
-            except KeyError:
-                continue
+##            ## Take into account that pre-selected SNPs
+##            ## might not be in the set of SNPs
+##            ## for which LD has been calculated
+##            try:
+##                cnt = d_ID2cnt[ID]
+##            except KeyError:
+##                ## Fudge fix! The preselected SNPs not in the LD files
+##                ## need to be added to the output
+##                ## until a proper fix is implemented.
+##                set_preselected_remove.add(ID)
+####                for i_pop in d_setQ.keys():
+####                    d_setQ[i_pop].add(ID)
+##                continue
             ## ID was already tagged
             if d_ID2cnt[ID] == 0:  # added 2014jun15
                 setT.add(ID)
@@ -359,7 +366,7 @@ def update_counts_and_set_of_tagged_SNPs(
                     continue
                 ## already a tagging SNP
                 if ID_tagged in setT:
-                    print(ID_tagged, ID_tagging,l_IDs_tagged)
+                    print(ID_tagged, ID_tagging, l_IDs_tagged)
                     stop_not_expected_should_already_be_in_setQ
                     continue
                 d_setQ[i_pop].add(ID_tagged)
