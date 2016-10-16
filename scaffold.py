@@ -81,9 +81,7 @@ def invert_dictionary(d_ID2cnt):
 
 def write_output(d_args, setT, d_setQ):
 
-    with open('{}.tagSNPs'.format(d_args['out']), 'w') as f:
-        for ID in setT:
-            f.write('{}\n'.format(ID))
+    write_set_to_file(setT, '{}.tagSNPs'.format(d_args['out']))
     with open('{}.tagged'.format(d_args['out']), 'w') as f:
         for i_pop, setQ in d_setQ.items():
             for ID in setQ:
@@ -102,10 +100,11 @@ def parse_input_sets(d_args):
 
     set_preselected = set()
     # Go through each of the of pre-selected files
-    for preselect in  d_args['preselected']:
-        with open(preselect) as f_preselected:
+    for path_preselect in d_args['preselected']:
+        with open(path_preselect) as f_preselected:
             curr_pre = set(line.rstrip() for line in f_preselected)
-        set_preselected = set_preselected|curr_pre
+        ## Append curr_pre to the union set set_preselected.
+        set_preselected |= curr_pre
 
     ## tag SNPs should not be ignored.
     set_ignore -= set_preselected
@@ -308,9 +307,8 @@ def select_tag_SNPs(d_args, d_cnt2IDs, setT, d_setQ, d_ID2cnt, d_ID2tell):
     sys.stdout.flush()
 
     ## The number of tag SNPs cannnot exceed the number of input SNPs.
-    d_args['max_tagSNP'] = min(
-        d_args['max_tagSNP'],
-        len(d_ID2tell.keys())+len(setT))
+    d_args['max_tagSNP'] = set([
+        min(_, len(d_ID2tell.keys())+len(setT)) for _ in d_args['max_tagSNP']])
 
     d_len_setS = {i_pop: 0 for i_pop, _ in enumerate(d_args['in'])}
     for ID in d_ID2tell.keys():
@@ -321,7 +319,7 @@ def select_tag_SNPs(d_args, d_cnt2IDs, setT, d_setQ, d_ID2cnt, d_ID2tell):
 
     count_tagging = most_common_key = max(d_cnt2IDs.keys())
     with open('{}.LDmatrix'.format(d_args['out'])) as f_matrix:
-        while len(setT) < d_args['max_tagSNP']:
+        while len(setT) < max(d_args['max_tagSNP']):
             ## Find the most common element.
             ## collections.Counter.most_common(1) is too slow.
             while True:
@@ -343,10 +341,25 @@ def select_tag_SNPs(d_args, d_cnt2IDs, setT, d_setQ, d_ID2cnt, d_ID2tell):
             setT = update_counts_and_set_of_tagged_SNPs(
                 ID, d_ID2tell, f_matrix, setT, d_ID2cnt, d_cnt2IDs,
                 d_setQ, d_args)
+            # We met one of the desired tag SNP counts.
+            # So let's write 
+            if len(setT) == min(d_args['max_tagSNP']):
+                write_set_to_file(setT, '{}.{}.tagSNPs'.format(
+                        d_args['out'], len(setT)))
+                d_args['max_tagSNP'].remove(len(setT))
             ## Continue while loop.
             continue
 
     return setT
+
+
+def write_set_to_file(_set, path):
+
+    with open(path, 'w') as f:
+        for ID in _set:
+            f.write('{}\n'.format(ID))
+
+    return
 
 
 def update_counts_and_set_of_tagged_SNPs(
@@ -448,28 +461,38 @@ def argparser():
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
-        '--in', required=True, nargs='+', help='Provide a list of filepaths to ldgzip files, one file per population',
+        '--in', required=True, nargs='+',
+        help='Provide a list of filepaths to ldgzip files, one file per population',
         )
     parser.add_argument(
         '--out', required=True, help='Output file path')
     parser.add_argument(
-        '--min_LD', type=float, default=.8, help='Set the minimum LD (Default = 0.8)')
+        '--min_LD', type=float, default=.8,
+        help='Set the minimum LD (Default = 0.8)')
     parser.add_argument(
-        '--min_MAF', type=float, default=.01, help='Set the minimum MAF (Default=0.01)')
+        '--min_MAF', type=float, default=.01,
+        help='Set the minimum MAF (Default=0.01)')
     parser.add_argument(
-        '--max_window', type=int, default=250000, help='Set the maximum window for calculating LD (Default 250000 bp)')
+        '--max_window', type=int, default=250000,
+        help='Set the maximum window for calculating LD (Default 250000 bp)',
+        )
 		
     #In practice there can be multiple preselected files (including 0)
-    parser.add_argument('--preselected',nargs='+', help='List of files with requested SNPs to include regardless of LD or MAF. Flat text file, one ID per line')
-    parser.add_argument('--pretagged', '--ignore', '--blacklist', help='List of SNPs to exclude. Flat text file, one ID per line')
     parser.add_argument(
-        '--max_tagSNP', type=int, default=1000000, help='Maximum number of tag SNPs to return (Default 1000000)'
+        '--preselected',nargs='+',
+        help='List of files with requested SNPs to include regardless of LD or MAF. Flat text file, one ID per line',
+        default=[],
+        )
+    parser.add_argument(
+        '--pretagged', '--ignore', '--blacklist',
+        help='List of SNPs to exclude. Flat text file, one ID per line')
+    parser.add_argument(
+        '--max_tagSNP', type=int, nargs='+', default=[1000000],
+        help='Maximum number of tag SNPs to return (Default 1000000)'
         )
 
     d_args = vars(parser.parse_args())
 
-    if d_args['preselected'] == 'None':
-        d_args['preselected'] = None
     if d_args['pretagged'] == 'None':
         d_args['pretagged'] = None
 
