@@ -12,13 +12,8 @@ def main():
 
     #Sample output
     for i in range(1, 3):
-        for i, j in enumerate(counts.keys()):
-            print(counts.keys())
-            print(counts.items())
-        for i, k in enumerate(ld_table.keys()):
-            print(ld_table.keys())
-            print(ld_table.items())
-
+        list(counts.keys())[i]
+        list(ld_table.keys())[i]
 
 def argparsing():
 
