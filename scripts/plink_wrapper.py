@@ -23,27 +23,28 @@ def main():
         numchr=args.chrnum
     else:
         chr = ""
-        numchr="1"
+        numchr=1
+        
+    #populate and run plink commands
     for vcf in args.vcf:    
         for pop_name in set_pops:
-            run_plink = "for i in {1.." \
-            + numchr \
-            + "}; do " \
-            + args.plinkpath \
-            + "plink --vcf " \
-            + vcf \
-            + " --attrib-indiv " \
-            + args.popnames \
-            + " " \
-            + pop_name \
-            + chr \
-            + " --r2 gz " \
-            + maf \
-            + " --out " \
-            + pop_name \
-            + "_chr${i}; done" 
-            print(run_plink) #remove later
-            subprocess.run(run_plink, shell = True)
+            for i in range(1,numchr):
+                run_plink = args.plinkpath \
+                + "plink --vcf " \
+                + vcf \
+                + " --attrib-indiv " \
+                + args.popnames \
+                + " " \
+                + pop_name \
+                + chr \
+                + " --r2 gz " \
+                + maf \
+                + " --out " \
+                + pop_name \
+                + "_chr" \
+                + i
+                print(run_plink) #remove later
+                subprocess.run(run_plink, shell = True)
 
 def argparsing():
     parser = argparse.ArgumentParser(description='wrapper for plink commands')
