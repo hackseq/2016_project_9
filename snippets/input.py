@@ -10,10 +10,8 @@ def main():
     with gzip.open(args.ldgzip, 'rt') as f:
         getLDs(f, counts, ld_table)
 
-    #Sample output
-    for i in range(1, 3):
-        print(list(counts.items())[i])
-        print(list(ld_table.items())[i])
+    #Sample output, uncomment line below to print to console
+    #getSampleData()
 
 def argparsing():
 
@@ -59,6 +57,12 @@ def addToDict(snp1, snp2, ld_table):
         ld_table[snp1].add(snp2)
     except:
         ld_table[snp1] = set([snp2])
+
+
+def getSampleData():
+    for i in range(1, 5):
+        print(list(counts.items())[i])
+        print(list(ld_table.items())[i])
 
 if __name__ == '__main__':
     main()
