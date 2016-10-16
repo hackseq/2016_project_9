@@ -10,12 +10,14 @@ def main():
     with gzip.open(args.ldgzip, 'rt') as f:
         getLDs(f, counts, ld_table)
 
-    #Sample output 
+    #Sample output
     for i in range(1, 15):
-        print(counts.keys(i))
-        print(counts.items(i))
-        print(ld_table.keys(i))
-        print(ld_table.items(i))
+        for i, j in enumerate (counts.keys()):
+            print(counts.keys())
+            print(counts.items())
+        for i, k in enumarte(ld_table.keys()):
+            print(ld_table.keys())
+            print(ld_table.items())
 
 
 def argparsing():
@@ -32,8 +34,12 @@ def argparsing():
 
 
 def getLDs(inp, counts, ld_table):
-
     '''Parse lines from input and append to dictionaries'''
+    # Check if MAF columns are present.
+    if len(inp) == 9:
+        index = 6
+    else:
+        index = 5
 
     # Loop over PLINK output lines.
     for line in inp:
@@ -41,7 +47,7 @@ def getLDs(inp, counts, ld_table):
         data = line.split()
         # Parse SNP IDs.
         snp1 = data[2]
-        snp2 = data[6]
+        snp2 = data[index]
         # Append SNP IDs to dictionary.
         addToDict(snp1, snp2, ld_table)
         addToDict(snp2, snp1, ld_table)
