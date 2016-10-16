@@ -13,5 +13,9 @@ The algorithm selects SNPs that tag other SNPs most efficient across individuals
 ### Language
 Python 3.x
 
+### Dependencies
+[PLINK](https://www.cog-genomics.org/plink2)
+[pysam](https://pysam.readthedocs.io/en/latest/index.html)
+
 ### See more 
 [Wiki](https://github.com/hackseq/2016_project_9/wiki)
