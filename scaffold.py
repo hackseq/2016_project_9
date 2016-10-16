@@ -471,6 +471,8 @@ def argparser():
     parser.add_argument(
         '--out', required=True, help='Output file path')
     parser.add_argument(
+        '--ref', required=False, help='Reference fasta file (bgzipped, indexed)')
+    parser.add_argument(
         '--min_LD', type=float, default=.8,
         help='Set the minimum LD (Default = 0.8)')
     parser.add_argument(
