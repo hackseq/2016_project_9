@@ -87,6 +87,7 @@ def main():
     indices = get_sample_indices(inputsamplefilename, outputsamplefilename, args.popnames)
     for infilename in hapfiles:
         shutil.copy(infilename.replace(".hap.gz",".legend.gz"),args.outputfolder)
+        shutil.copy(infilename.replace(".hap.gz","_combined_b37.txt").replace("1000GP_Phase3_","genetic_map_"),args.outputfolder)
         outfilename = os.path.join(args.outputfolder, os.path.basename(infilename))
         worklist.append((infilename,outfilename,indices))
     pool = Pool(args.threads)
