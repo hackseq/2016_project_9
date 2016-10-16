@@ -347,6 +347,9 @@ def select_tag_SNPs(d_args, d_cnt2IDs, setT, d_setQ, d_ID2cnt, d_ID2tell):
                 write_set_to_file(setT, '{}.{}.tagSNPs'.format(
                         d_args['out'], len(setT)))
                 d_args['max_tagSNP'].remove(len(setT))
+                ## Break the loop, if we met the maximum number of tag SNPs.
+                if len(d_args['max_tagSNP']) == 0:
+                    break
             ## Continue while loop.
             continue
 
@@ -355,6 +358,7 @@ def select_tag_SNPs(d_args, d_cnt2IDs, setT, d_setQ, d_ID2cnt, d_ID2tell):
 
 def write_set_to_file(_set, path):
 
+    print('Writing the file', path)
     with open(path, 'w') as f:
         for ID in _set:
             f.write('{}\n'.format(ID))
@@ -488,7 +492,7 @@ def argparser():
         help='List of SNPs to exclude. Flat text file, one ID per line')
     parser.add_argument(
         '--max_tagSNP', type=int, nargs='+', default=[1000000],
-        help='Maximum number of tag SNPs to return (Default 1000000)'
+        help='Maximum number of tag SNPs to return (Default 1000000).'
         )
 
     d_args = vars(parser.parse_args())
