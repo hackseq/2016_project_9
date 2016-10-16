@@ -10,11 +10,12 @@ def main():
     with gzip.open(args.ldgzip, 'rt') as f:
         getLDs(f, counts, ld_table)
 
+    #Sample output 
     for i in range(1, 15):
-        print(counts.keys())
-        print(counts.items())
-        print(ld_table.keys())
-        print(ld_table.items())
+        print(counts.keys(i))
+        print(counts.items(i))
+        print(ld_table.keys(i))
+        print(ld_table.items(i))
 
 
 def argparsing():
