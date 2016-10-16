@@ -100,11 +100,12 @@ def parse_input_sets(d_args):
     else:
         set_ignore = set()
 
-    if d_args['preselected']:
-        with open(d_args['preselected']) as f_preselected:
-            set_preselected = set(line.rstrip() for line in f_preselected)
-    else:
-        set_preselected = set()
+    set_preselected = set()
+    # Go through each of the of pre-selected files
+    for preselect in  d_args['preselected']:
+        with open(preselect) as f_preselected:
+            curr_pre = set(line.rstrip() for line in f_preselected)
+        set_preselected = set_preselected|curr_pre
 
     ## tag SNPs should not be ignored.
     set_ignore -= set_preselected
@@ -450,7 +451,8 @@ def argparser():
         '--min_MAF', type=float, default=.01)
     parser.add_argument(
         '--max_window', type=int, default=250000)
-    parser.add_argument('--preselected')
+    #In practice there can be multiple preselected files (including 0)
+    parser.add_argument('--preselected',nargs='+', help='list of files with requested SNPs in it')
     parser.add_argument('--pretagged', '--ignore', '--blacklist')
     parser.add_argument(
         '--max_tagSNP', type=int, default=1000000,
