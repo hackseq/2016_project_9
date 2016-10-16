@@ -34,12 +34,18 @@ def argparsing():
 
 
 def getLDs(inp, counts, ld_table):
+
     '''Parse lines from input and append to dictionaries'''
     # Check if MAF columns are present.
-    if len(inp) == 9:
-        index = 6
-    else:
-        index = 5
+    index = 5
+
+    for line in inp:
+        n = len(line.split())
+        if n == 9:
+            index = 6
+        print(n)
+        print (index)
+        break;
 
     # Loop over PLINK output lines.
     for line in inp:
