@@ -11,7 +11,7 @@ def main():
         getLDs(f, counts, ld_table)
 
     #Sample output
-    for i in range(1, 15):
+    for i in range(1, 5):
         for i, j in enumerate (counts.keys()):
             print(counts.keys())
             print(counts.items())
@@ -38,13 +38,10 @@ def getLDs(inp, counts, ld_table):
     '''Parse lines from input and append to dictionaries'''
     # Check if MAF columns are present.
     index = 5
-
     for line in inp:
         n = len(line.split())
         if n == 9:
             index = 6
-        print(n)
-        print (index)
         break;
 
     # Loop over PLINK output lines.
