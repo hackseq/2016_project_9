@@ -89,6 +89,27 @@ def write_output(d_args, setT, d_setQ):
 
     return
 
+def write_output_vcf(d_args, setT):
+    reference_fasta = pysam.Fastafile(d_args['ref'])
+    with open(d_args['out'], 'w') as f:
+        # VCF Header
+        f.write('##fileformat=VCFv4.2\n')
+        f.write('##reference=' + d_args['ref'] + '\n')
+
+        # 8 mandatory columns for VCF file
+        f.write("#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\n")
+
+        for snp in setT:
+            (chrom, pos) = snp.rstrip().split(':')
+            ident = '.'
+            start = int(pos) - 1
+            end = int(pos)
+            ref = reference_fasta.fetch(chrom, start, end)
+            alt = '.'
+            qual = '.'
+            filt = '.'
+            info = '.'
+            f.write('\t'.join([chrom, pos, ident, ref, alt, qual, filt, info]) + '\n')
 
 def parse_input_sets(d_args):
 
