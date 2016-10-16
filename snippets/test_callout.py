@@ -45,7 +45,7 @@ def main():
             + "_chr${i}" \
             + "; done" 
             print(run_plink) #remove later
-            #subprocess.run(run_plink, shell = True)
+            subprocess.run(run_plink, shell = True)
 
 def argparsing():
     parser = argparse.ArgumentParser(description='wrapper for plink commands')
