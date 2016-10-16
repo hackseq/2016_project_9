@@ -11,7 +11,6 @@ def main():
     #take population names from input file 
     with open(args.popnames, 'r') as myfile:
         set_pops = set([line.rstrip().split()[0] for line in myfile])
-    print(set_pops) #remove later
     
     #populate vectors with optional arguments
     if args.maf:
@@ -20,7 +19,7 @@ def main():
         maf = ""
     if args.chrnum:
         chr = " --chr " + args.chrnum
-        numchr=args.chrnum #maybe unnecessary 
+        numchr=args.chrnum
     else:
         chr = ""
         numchr="2"
@@ -43,7 +42,6 @@ def main():
                 + pop_name \
                 + "_chr" \
                 + str(i)
-                print(run_plink) #remove later
                 subprocess.run(run_plink, shell = True)
 
 def argparsing():
@@ -54,7 +52,6 @@ def argparsing():
     parser.add_argument('--plinkpanel', required=True, help='panel of individuals in plink format in your dataset')
     parser.add_argument('--chrnum', required=False, help='number of chromosomes in your vcf file')
     parser.add_argument('--maf', required=False, action="store_true", help='return MAF values')
-    #parser.add_argument('--', required=False, help='')
 
     args = parser.parse_args()
 
