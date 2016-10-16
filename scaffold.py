@@ -122,8 +122,14 @@ def update_counts_for_preselected_tag_SNPs(
         len(d_ID2tell.keys()), len(d_ID2cnt.keys()))
     with open('{}.LDmatrix'.format(d_args['out'])) as f:
         for ID in set_preselected:
+            ## Take into account that pre-selected SNPs
+            ## might not be in the set of SNPs
+            ## for which LD has been calculated
+            try:
+                cnt = d_ID2cnt[ID]
+            except KeyError:
+                continue
             ## ID was already tagged
-#            if not ID in d_ID2cnt.keys():  # added 2014jun15
             if d_ID2cnt[ID] == 0:  # added 2014jun15
                 setT.add(ID)
                 del d_ID2cnt[ID]
@@ -434,14 +440,21 @@ def argparser():
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
-        '--in', required=True, nargs='+', help='one file per population')
-    parser.add_argument('--out', required=True)
-    parser.add_argument('--min_LD', type=float, default=.8)
-    parser.add_argument('--min_MAF', type=float, default=.01)
-    parser.add_argument('--max_window', type=int, default=250000)
+        '--in', required=True, nargs='+', help='one file per population',
+        )
+    parser.add_argument(
+        '--out', required=True)
+    parser.add_argument(
+        '--min_LD', type=float, default=.8)
+    parser.add_argument(
+        '--min_MAF', type=float, default=.01)
+    parser.add_argument(
+        '--max_window', type=int, default=250000)
     parser.add_argument('--preselected')
-    parser.add_argument('--pretagged', '--ignore')
-    parser.add_argument('--max_tagSNP', type=int, default=1000000)
+    parser.add_argument('--pretagged', '--ignore', '--blacklist')
+    parser.add_argument(
+        '--max_tagSNP', type=int, default=1000000,
+        )
 
     d_args = vars(parser.parse_args())
 
