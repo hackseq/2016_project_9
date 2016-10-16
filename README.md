@@ -15,6 +15,7 @@ Python 3.x
 
 ### Dependencies
 [PLINK](https://www.cog-genomics.org/plink2)
+
 [pysam](https://pysam.readthedocs.io/en/latest/index.html)
 
 ### See more 
