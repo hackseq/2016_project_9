@@ -6,4 +6,5 @@ python3 \
   --min_MAF 0.02 \
   --max_window 200000 \
   --max_tagSNP 2000000 \
+  --preselected data/poollist.snps \
 
