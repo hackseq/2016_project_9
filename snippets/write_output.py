@@ -8,13 +8,13 @@ def main():
               'pretagged': None,
               'min_LD': 0.80,
               'min_MAF': 0.01,
-              'in': ['~/tmp/ALL.chr20.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.ESN.vcf.gz'],
+              'in': ['../../data/ALL.chr20.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz'],
               'max_window': 250000,
               'preselected': None,
               'max_tagSNP': 1000000,
     }
     
-    setT = set()
+    setT = set('20:1280','20:256','20:2048','20:65535')
     print(setT)
     d_setQ = {}
     print(d_setQ)
@@ -33,7 +33,7 @@ def write_output(d_args, setT, d_setQ):
 
     return
 
-def write_output_vcf(d_args, setT, d_setQ):
+def write_output_vcf(d_args, setT):
     vcf_reader = vcf.Reader(d_args['in'][0], 'r')
     vcf_writer = vcf.Writer(d_args['out'], vcf_reader)
     
