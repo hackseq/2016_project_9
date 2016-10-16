@@ -19,8 +19,8 @@ def main():
     else:
         maf = ""
     if args.chrnum:
-        chr = " --chr${i}"
-        numchr=args.chrnum
+        chr = " --chr " + args.chrnum
+        numchr=args.chrnum #maybe unnecessary 
     else:
         chr = ""
         numchr="1"
