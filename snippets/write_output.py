@@ -1,22 +1,13 @@
 #!/usr/bin/env python3
 
 import sys
-import vcf
+# import vcf
 
 def main():
-    # Create dict with dummy values for testing
-    d_args = {'out': sys.stdout,
-              'pretagged': None,
-              'min_LD': 0.80,
-              'min_MAF': 0.01,
-              'in': ['../../data/ALL.chr20.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz'],
-              'max_window': 250000,
-              'preselected': None,
-              'max_tagSNP': 1000000,
-    }
-    
-    setT = {'20:1280','20:256','20:2048','20:65535'}
-    d_setQ = {}
+    d_args = {'out': sys.stdout}
+    setT = set()
+    for line in sys.stdin:
+        setT.add(line)
     write_output_vcf(d_args, setT)
 
 def write_output(d_args, setT, d_setQ):
@@ -41,7 +32,7 @@ def write_output_vcf(d_args, setT):
         f.write("#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\n")
         # To start with, just print Chrom & Pos
         for snp in setT:
-            f.write(snp.replace(':','\t') + '\n')
+            f.write(snp.rstrip().replace(':','\t') + '\t.\t.\t.\t.\t.\t.\n')
         
 if __name__ == '__main__':
     main()
