@@ -23,12 +23,12 @@ def main():
         numchr=args.chrnum
     else:
         chr = ""
-        numchr=1
+        numchr="1"
         
     #populate and run plink commands
     for vcf in args.vcf:    
         for pop_name in set_pops:
-            for i in range(1,numchr):
+            for i in range(1,int(numchr)):
                 run_plink = args.plinkpath \
                 + "plink --vcf " \
                 + vcf \
