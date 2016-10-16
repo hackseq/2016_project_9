@@ -6,7 +6,7 @@ import os
 import sys
 import collections
 import gzip
-
+import pysam
 
 def main():
 
