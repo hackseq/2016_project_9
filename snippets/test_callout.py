@@ -53,7 +53,7 @@ def argparsing():
     parser.add_argument('--popnames', required=True, help='tab-separated file in plink keep format (popid indid)')
     parser.add_argument('--plinkpath', required=True, help='path to plink')
     parser.add_argument('--chrnum', required=False, help='number of chromosomes in your vcf file')
-    parser.add_argument('--maf', required=False, help='return MAF values')
+    parser.add_argument('--maf', required=False, action="store_true", help='return MAF values')
     #parser.add_argument('--', required=False, help='')
 
     args = parser.parse_args()
