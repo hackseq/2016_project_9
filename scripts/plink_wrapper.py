@@ -29,7 +29,6 @@ def main():
     for vcf in args.vcf:    
         for pop_name in set_pops:
             for i in range(1,numchr):
-                print(i) #remove later
                 run_plink = args.plinkpath \
                 + "plink --vcf " \
                 + vcf \
