@@ -17,10 +17,11 @@ def write_output_vcf(d_args, setT):
     with d_args['out'] as f:
         # VCF Header
         f.write('##fileformat=VCFv4.2\n')
-        f.write('##reference=' + d_args['ref'])
+        f.write('##reference=' + d_args['ref'] + '\n')
+
         # 8 mandatory columns for VCF file
         f.write("#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\n")
-        # To start with, just print CHROM, POS and REF
+
         for snp in setT:
             (chrom, pos) = snp.rstrip().split(':')
             ident = '.'
