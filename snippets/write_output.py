@@ -28,6 +28,8 @@ def write_output_vcf(d_args, setT):
     # vcf_writer = vcf.Writer(d_args['out'], vcf_reader)
 
     with d_args['out'] as f:
+        # VCF Header
+        f.write('##fileformat=VCFv4.0\n')
         # 8 mandatory columns for VCF file
         f.write("#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\n")
         # To start with, just print Chrom & Pos
