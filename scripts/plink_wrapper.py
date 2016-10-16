@@ -23,7 +23,7 @@ def main():
         numchr=args.chrnum #maybe unnecessary 
     else:
         chr = ""
-        numchr="1"
+        numchr="2"
         
     #populate and run plink commands
     for vcf in args.vcf:    
