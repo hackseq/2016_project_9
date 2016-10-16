@@ -13,7 +13,8 @@ def main():
     for i in range(1, 15):
         print(counts.keys())
         print(counts.items())
-        print(ld_table.keys() + ld_table.items())
+        print(ld_table.keys())
+        print(ld_table.items())
 
 
 def argparsing():
