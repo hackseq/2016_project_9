@@ -38,7 +38,7 @@ def main():
             + " " \
             + pop_name \
             + chr \
-            + " --r2 gz" \
+            + " --r2 gz " \
             + maf \
             + " --out " \
             + pop_name \
