@@ -162,15 +162,21 @@ def open_file(file):
 
 def filter_lines(f, d_args, set_ignore, set_candidate):
 
+    ## Skip header.
+    for line in f:
+        break
+
+    ## Loop over lines following the one line header.
     for line in f:
 
         l = line.rstrip().split()
-        ## Parse SNP IDs.
-        ID1 = l[0]
-        ID2 = l[1]
-        ## Parse MAF.
-        MAF1 = float(l[5])
-        MAF2 = float(l[6])
+        ## Parse the line.
+        chrom1 = l[0]
+        ID1 = l[2]
+        MAF1 = float(l[3])
+        chrom2 = l[4]
+        ID2 = l[6]
+        MAF2 = float(l[7])
         ## Determine if SNPs are to be skipped;
         ## if below MAF threshold or set to be ignored.
         bool_ID1_skip = ID1 in set_ignore or MAF1 < d_args['min_MAF']
@@ -189,13 +195,13 @@ def filter_lines(f, d_args, set_ignore, set_candidate):
             pass
 
         ## Parse positions.
-        pos1 = int(l[2])
-        pos2 = int(l[3])
+        pos1 = int(l[1])
+        pos2 = int(l[5])
         ## Skip if positions are distant from each other.
         if abs(pos2 - pos1) > d_args['max_window']:
             continue
         ## Parse LD.
-        LD = float(l[4])
+        LD = float(l[8])
         ## Skip if LD below threshold.
         if LD < d_args['min_LD']:
             continue
@@ -241,7 +247,6 @@ def count_and_write_matrix(d_args, set_ignore):
                 files_LD = f_pop.read().rstrip().split('\n')
             ## Loop over input files.
             for file_LD in files_LD:
-                print(file_LD)
                 sys.stdout.flush()
                 ## Declare temporary LD dictionary.
                 d_LD = {}
