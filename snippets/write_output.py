@@ -14,12 +14,9 @@ def main():
               'max_tagSNP': 1000000,
     }
     
-    setT = set('20:1280','20:256','20:2048','20:65535')
-    print(setT)
+    setT = {'20:1280','20:256','20:2048','20:65535'}
     d_setQ = {}
-    print(d_setQ)
-#   write_output(d_args, setT, d_setQ)
-    write_output_vcf(d_args, setT, d_setQ)
+    write_output_vcf(d_args, setT)
 
 def write_output(d_args, setT, d_setQ):
 
