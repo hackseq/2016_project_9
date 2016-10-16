@@ -90,6 +90,7 @@ def write_output(d_args, setT, d_setQ):
     return
 
 def write_output_vcf(d_args, setT):
+    """Write tag SNPs to VCF file"""
     reference_fasta = pysam.Fastafile(d_args['ref'])
     with open(d_args['out'], 'w') as f:
         # VCF Header
