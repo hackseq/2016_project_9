@@ -33,7 +33,7 @@ def main():
                 + "plink --vcf " \
                 + vcf \
                 + " --attrib-indiv " \
-                + args.popnames \
+                + args.plinkpanel \
                 + " " \
                 + pop_name \
                 + chr \
@@ -49,8 +49,9 @@ def main():
 def argparsing():
     parser = argparse.ArgumentParser(description='wrapper for plink commands')
     parser.add_argument('--vcf', nargs='+', required=True, help='Input VCF file name')
-    parser.add_argument('--popnames', required=True, help='tab-separated file in plink keep format (popid indid)')
+    parser.add_argument('--popnames', required=True, help='tab-separated file (popid indid)')
     parser.add_argument('--plinkpath', required=True, help='path to plink')
+    parser.add_argument('--plinkpanel', required=True, help='panel of individuals in plink format in your dataset')
     parser.add_argument('--chrnum', required=False, help='number of chromosomes in your vcf file')
     parser.add_argument('--maf', required=False, action="store_true", help='return MAF values')
     #parser.add_argument('--', required=False, help='')
