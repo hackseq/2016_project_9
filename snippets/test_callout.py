@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import argparse
-import gzip #keep only if they want gzipped output??
 import os
 import subprocess
 
@@ -24,7 +23,7 @@ def main():
         numchr=args.chrnum
     else:
         chr = ""
-        numchr=1
+        numchr="1"
     for vcf in args.vcf:    
         for pop_name in set_pops:
             run_plink = "for i in {1.." \
