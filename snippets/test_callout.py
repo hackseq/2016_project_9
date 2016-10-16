@@ -41,8 +41,7 @@ def main():
             + maf \
             + " --out " \
             + pop_name \
-            + "_chr${i}" \
-            + "; done" 
+            + "_chr${i}; done" 
             print(run_plink) #remove later
             subprocess.run(run_plink, shell = True)
 
