@@ -1,0 +1,10 @@
+input/*.legend.gz
+input/*_combined_b37.txt
+input/*.hap.gz
+input/1000GP_Phase3.sample
+test_input/*.legend.gz
+test_input/*_combined_b37.txt
+test_input/*.hap.gz
+test_input/1000GP_Phase3.sample
+output/1000GP*
+env
