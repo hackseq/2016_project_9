@@ -42,7 +42,7 @@ def main():
                 + " --out " \
                 + pop_name \
                 + "_chr" \
-                + i
+                + str(i)
                 print(run_plink) #remove later
                 subprocess.run(run_plink, shell = True)
 
