@@ -12,8 +12,8 @@ def main():
 
     #Sample output
     for i in range(1, 3):
-        list(counts.keys())[i]
-        list(ld_table.keys())[i]
+        print(list(counts.items())[i])
+        print(list(ld_table.items())[i])
 
 def argparsing():
 
