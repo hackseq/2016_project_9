@@ -100,11 +100,12 @@ def parse_input_sets(d_args):
     else:
         set_ignore = set()
 
-    if d_args['preselected']:
-        with open(d_args['preselected']) as f_preselected:
-            set_preselected = set(line.rstrip() for line in f_preselected)
-    else:
-        set_preselected = set()
+    set_preselected = set()
+    # Go through each of the of pre-selected files
+    for preselect in  d_args['preselected']:
+        with open(preselect) as f_preselected:
+            curr_pre = set(line.rstrip() for line in f_preselected)
+        set_preselected = set_preselected|curr_pre
 
     ## tag SNPs should not be ignored.
     set_ignore -= set_preselected
@@ -457,7 +458,9 @@ def argparser():
         '--min_MAF', type=float, default=.01, help='Set the minimum MAF (Default=0.01)')
     parser.add_argument(
         '--max_window', type=int, default=250000, help='Set the maximum window for calculating LD (Default 250000 bp)')
-    parser.add_argument('--preselected', help='List of SNPs to include, regardless of LD or MAF. Flat text file, one ID per line')
+		
+    #In practice there can be multiple preselected files (including 0)
+    parser.add_argument('--preselected',nargs='+', help='List of files with requested SNPs to include regardless of LD or MAF. Flat text file, one ID per line')
     parser.add_argument('--pretagged', '--ignore', '--blacklist', help='List of SNPs to exclude. Flat text file, one ID per line')
     parser.add_argument(
         '--max_tagSNP', type=int, default=1000000, help='Maximum number of tag SNPs to return (Default 1000000)'
