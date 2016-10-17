@@ -18,41 +18,38 @@ dataValues=[]
 
 #Parse all output files with suffix '.info'
 dirPath = "."
-filenames = [f for f in os.listdir(dirPath) if ".info" in f ]
+filenames = [f for f in os.listdir(dirPath) if "info" in f ]
 
 #Write to file
-outfile = open('SNP.html','w')
+outfile = open('tagSNPResults.html','w')
 #File parse begin
 for infile in filenames:
+    freqCounts = {freq: [] for freq in rangenp}
     freqCounts = {}
-    short = infile.split(".info")[0]
+    shortName = infile.split("info")[0]
     with open(infile) as fileread:
         for line in fileread:
             if not "concord" in line:
-                linesplit = line.split(" ")
-                #r-squared value
-                r2 = float(linesplit[-1].rstrip("\n"))
-                #ignore '-1' r-squared
-                if r2 != -1:
+                linesplit = line.rstrip().split()
+                if float(linesplit[-1]) != -1:
+                    #print linesplit[-1]
+                    #continue
+                    #r-squared value
+                    r2 = float(linesplit[-1])
+                    #ignore '-1' r-squared
                     #Mean allele freq
-                    freq = linesplit[5]
-                    
-                    #Identify which value frequency resides between
-                    #(ex 0.02 values = 0.02 > values > 0.01 )
-                    rangeList = []
-                    for i in rangenp:
-                        rangeList.append(i)
-                        if float(i) > float(freq):
-                            rangeValue = round(rangeList[-1],3)
-                            if not rangeValue in freqCounts:
-                                freqCounts[rangeValue]=[]
-                            freqCounts[rangeValue].append(r2)
-                            rangeList.remove(i)
-                            break
+                    freq = round(float(linesplit[5]), 2)
+                    try:
+                        freqCounts[freq].append(r2)
+                    except KeyError:
+                        freqCounts[freq] = [r2]
+
     #Obtain the average r-squared value for the range and input it into dataValues list, a format for highcharts graphing
+    sortedvalueList=[]
     for k in sorted(freqCounts):
-        freqCounts[k]=str(sum(freqCounts[k])/len(freqCounts[k]))    
-    dataValues.append("{name: '"+short+"',data:" +str(freqCounts.values()).replace("'","")+"},")
+        freqCounts[k]=str(sum(freqCounts[k])/len(freqCounts[k]))
+        sortedvalueList.append(freqCounts[k])
+    dataValues.append("{name: '"+shortName+"',data:" +str(sortedvalueList).replace("'","")+"},")
 
 
 def LineChart(Order,sortedKeys,dataValues,title):
@@ -79,7 +76,7 @@ def LineChart(Order,sortedKeys,dataValues,title):
     outfile.write( "            text: ''"+"\n")
     outfile.write( "            },"+"\n")
     outfile.write( '            yAxis: {'+"\n")
-    outfile.write( '                min: 0,'+"\n")
+    outfile.write( '                min: -1.0,'+"\n")
     outfile.write( '                title: {'+"\n")
     outfile.write( "                    text: 'Mean r^2'"+"\n")
     outfile.write( '                }'+"\n")
