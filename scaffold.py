@@ -94,7 +94,11 @@ def write_output_vcf(d_args, setT):
     Note: VCF file will not be sorted.
           It can be sorted downstream by the vcftools 'vcf-sort' utility
     """
-    reference_fasta = pysam.Fastafile(d_args['ref'])
+    if d_args['ref']:
+        reference_fasta = pysam.Fastafile(d_args['ref'])
+    else:
+        reference_fasta = None
+        
     with open(d_args['out'], 'w') as f:
         # VCF Header
         f.write('##fileformat=VCFv4.2\n')
@@ -108,7 +112,10 @@ def write_output_vcf(d_args, setT):
             ident = '.'
             start = int(pos) - 1
             end = int(pos)
-            ref = reference_fasta.fetch(chrom, start, end)
+            if reference_fasta:
+                ref = reference_fasta.fetch(chrom, start, end)
+            else:
+                ref = '.'
             alt = '.'
             qual = '.'
             filt = '.'
