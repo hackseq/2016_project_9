@@ -26,7 +26,7 @@ def main():
         maf = ""
     if args.chrnum:
         chr = " --chr " + args.chrnum
-        numchr=args.chrnum
+        numchr=int(args.chrnum)+1
     else:
         chr = ""
         numchr="2"
@@ -35,21 +35,38 @@ def main():
     for vcf in args.vcf:    
         for pop_name in set_pops:
             for i in range(1,int(numchr)):
-                run_plink = args.plinkpath \
-                + "plink --vcf " \
-                + vcf \
-                + " --attrib-indiv " \
-                + args.plinkpanel \
-                + " " \
-                + pop_name \
-                + chr \
-                + " --r2 gz " \
-                + maf \
-                + " --out " \
-                + pop_name \
-                + "_chr" \
-                + str(i)
-                subprocess.run(run_plink, shell = True)
+                if args.chrnum:
+                    run_plink = args.plinkpath \
+                    + "plink --vcf " \
+                    + vcf \
+                    + " --attrib-indiv " \
+                    + args.plinkpanel \
+                    + " " \
+                    + pop_name \
+                    + chr \
+                    + " --r2 gz " \
+                    + maf \
+                    + " --out " \
+                    + pop_name \
+                    + "_chr" \
+                    + str(i)
+                    subprocess.run(run_plink, shell = True)
+                else:
+                    run_plink = args.plinkpath \
+                    + "plink --vcf " \
+                    + vcf \
+                    + " --attrib-indiv " \
+                    + args.plinkpanel \
+                    + " " \
+                    + pop_name \
+                    + chr \
+                    + " --r2 gz " \
+                    + maf \
+                    + " --out " \
+                    + pop_name \
+                    + "_chr" \
+                    + args.singlechrnum
+                    subprocess.run(run_plink, shell = True)
 
 def argparsing():
     parser = argparse.ArgumentParser(description='wrapper for plink commands')
@@ -59,7 +76,8 @@ def argparsing():
     parser.add_argument('--plinkpanel', required=True, help='panel of individuals in plink format in your dataset')
     parser.add_argument('--chrnum', required=False, help='number of chromosomes in your vcf file')
     parser.add_argument('--maf', required=False, action="store_true", help='return MAF values')
-
+    parser.add_argument('--singlechrnum', required=False, help='input the single chromosome number you are analyzing')
+    
     args = parser.parse_args()
 
     return args
