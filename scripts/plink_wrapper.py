@@ -1,5 +1,12 @@
 #!/usr/bin/env python3
 
+### Possible improvements ###
+### Replace for loops with something faster
+### Have the plink commands run in parallel somehow
+### popnames and plinkpanel are slightly redundant
+### 
+###
+
 import argparse
 import os
 import subprocess
