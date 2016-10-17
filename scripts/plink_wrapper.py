@@ -27,9 +27,13 @@ def main():
     if args.chrnum:
         chr = " --chr " + args.chrnum
         numchr=int(args.chrnum)+1
-    else:
+    elif args.singlechrnum:
         chr = ""
         numchr="2"
+    else:
+        print("     You are running plink on a single chromosome.\n \
+        Please use the '--singlechrnum' flag followed by your chromosome's number.")
+        exit()
         
     #populate and run plink commands
     for vcf in args.vcf:    
