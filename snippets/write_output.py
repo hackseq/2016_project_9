@@ -5,7 +5,7 @@ import pysam
 
 def main():
     d_args = {'out': sys.stdout,
-              'ref': '/home/tcarstensen/data/hs37d5.fa.gz'
+              'ref': None
              }
     setT = set()
     for line in sys.stdin:
@@ -13,7 +13,15 @@ def main():
     write_output_vcf(d_args, setT)
 
 def write_output_vcf(d_args, setT):
-    reference_fasta = pysam.Fastafile(d_args['ref'])
+    """Write tag SNPs to VCF file
+    Note: VCF file will not be sorted.
+          It can be sorted downstream by the vcftools 'vcf-sort' utility
+    """
+    if d_args['ref']:
+        reference_fasta = pysam.Fastafile(d_args['ref'])
+    else:
+        reference_fasta = None
+
     with d_args['out'] as f:
         # VCF Header
         f.write('##fileformat=VCFv4.2\n')
@@ -27,7 +35,10 @@ def write_output_vcf(d_args, setT):
             ident = '.'
             start = int(pos) - 1
             end = int(pos)
-            ref = reference_fasta.fetch(chrom, start, end)
+            if reference_fasta:
+                ref = reference_fasta.fetch(chrom, start, end)
+            else:
+                ref = '.'
             alt = '.'
             qual = '.'
             filt = '.'
